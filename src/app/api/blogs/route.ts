@@ -10,6 +10,22 @@ const blogSchema = z.object({
     content: z.string().min(10),
 });
 
+
+export async function GET() {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+        await connectDB();
+        const blogs = await Blog.find();
+
+        return NextResponse.json({ message: "Blogs fetched", data: blogs }, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    }
+};
+
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
@@ -34,6 +50,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ message: "Blog created", blog: newBlog }, { status: 201 })
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }
+
