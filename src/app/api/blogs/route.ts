@@ -18,11 +18,10 @@ export async function GET() {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
         await connectDB();
-        const blogs = await Blog.find();
-
+        const blogs = await Blog.find().sort({ createdAt: -1});
         return NextResponse.json({ message: "Blogs fetched", data: blogs }, { status: 200 })
     } catch (error) {
-        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 });
     }
 };
 
