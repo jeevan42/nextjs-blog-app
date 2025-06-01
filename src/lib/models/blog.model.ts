@@ -10,8 +10,7 @@ const blogSchema = new Schema({
         required: [true, "Content is required"],
     },
     author: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
         required: true
     },
 }, {
