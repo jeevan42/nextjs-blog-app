@@ -1,22 +1,11 @@
-"use client";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import DashboardClient from "./DashboardClient";
 
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-
-export default function DashboardPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p>Welcome {session?.user?.name}</p>
-      <button
-        onClick={() => router.push("/account")}
-        style={{ position: "absolute", top: 10, right: 100 }}
-      >
-        View Account
-      </button>
-    </div>
+    <DashboardClient session={session}></DashboardClient>
   );
 }
